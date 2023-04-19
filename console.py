@@ -137,7 +137,7 @@ class HBNBCommand(cmd.Cmd):
             # extract the values by dropping the double quotes
             if value[0] == '"' and value[-1] == '"' and \
                     value.count('\\"') % 2 == 0:
-                value = value[1:-1].replace('_', ' ').replace('\\"', '"')
+                value = value[1:-1].replace('_', ' ').replace('"', '\\')
             # check whether the user provided a float else the value is an int
             elif '.' in value:
                 try:
@@ -350,6 +350,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

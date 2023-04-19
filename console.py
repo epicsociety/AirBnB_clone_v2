@@ -118,10 +118,43 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
+        args = args.split()
+        class_name = args[0]
+        if class_name not in HBNBCommand.classes:
+            print("**.class.doesn't.exist.**")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        #create a dict with the params gotten from the commandline
+        params = {}
+        for param in args[1:]:
+            key_value = param.split('=')
+            if len(key_value) != 2:
+                continue
+
+            key = key_value[0]
+            value = key_value[1]
+
+            #extract the values by dropping the double quotes
+            if (value[0] == '"' and value[-1] == '"'
+                and value.count('\\"') % 2 == 0):
+                value = value[1:-1].replace('_', ' ').replace('\\"', '"')
+            #check whether the user provided a float else the value is an int
+            elif '.' in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+            else:
+                try:
+                    value = int(value)
+                except ValueError:
+                    continue
+
+            # our dictionary is now okay
+            params[key] = value
+        
+        #creates the new instance
+        new_instance = HBNBCommand.classes[class_name]()
         storage.save()
         print(new_instance.id)
         storage.save()

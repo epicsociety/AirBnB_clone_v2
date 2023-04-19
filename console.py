@@ -124,7 +124,7 @@ class HBNBCommand(cmd.Cmd):
             print("**.class.doesn't.exist.**")
             return
 
-        #create a dict with the params gotten from the commandline
+        # create a dict with the params gotten from the commandline
         params = {}
         for param in args[1:]:
             key_value = param.split('=')
@@ -134,11 +134,11 @@ class HBNBCommand(cmd.Cmd):
             key = key_value[0]
             value = key_value[1]
 
-            #extract the values by dropping the double quotes
-            if (value[0] == '"' and value[-1] == '"'
-                and value.count('\\"') % 2 == 0):
+            # extract the values by dropping the double quotes
+            if value[0] == '"' and value[-1] == '"' and \
+                    value.count('\\"') % 2 == 0:
                 value = value[1:-1].replace('_', ' ').replace('\\"', '"')
-            #check whether the user provided a float else the value is an int
+            # check whether the user provided a float else the value is an int
             elif '.' in value:
                 try:
                     value = float(value)
@@ -152,8 +152,8 @@ class HBNBCommand(cmd.Cmd):
 
             # our dictionary is now okay
             params[key] = value
-        
-        #creates the new instance
+
+        # creates the new instance
         new_instance = HBNBCommand.classes[class_name]()
         storage.save()
         print(new_instance.id)

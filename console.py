@@ -125,7 +125,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         # create a dict with the params gotten from the commandline
-        params = {}
+        new_instance = HBNBCommand.classes[class_name]()
         for param in args[1:]:
             key_value = param.split('=')
             if len(key_value) != 2:
@@ -150,11 +150,9 @@ class HBNBCommand(cmd.Cmd):
                 except ValueError:
                     continue
 
-            # our dictionary is now okay
-            params[key] = value
+            setattr(new_instance, key, value)
 
         # creates the new instance
-        new_instance = HBNBCommand.classes[class_name]()
         storage.save()
         print(new_instance.id)
         storage.save()

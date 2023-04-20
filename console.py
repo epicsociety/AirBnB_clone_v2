@@ -138,7 +138,7 @@ class HBNBCommand(cmd.Cmd):
             elif ('.' not in key_value[1]):
                 key_value[1] = int(key_value[1])
 
-            setattr(new_instance, key, value)
+            setattr(new_instance, key_value[0], key_value[1])
 
         # creates the new instance
         new_instance.save()

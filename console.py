@@ -133,14 +133,17 @@ class HBNBCommand(cmd.Cmd):
             elif ('"' in key_value[1]):
                 key_value[1] = key_value[1][1:-1]
                 key_value[1] = key_value[1].replace("_", " ")
-            elif('.' in key_value)
+            elif('.' in key_value[1]):
+                key_value[1] = float(key_value[1])
+            elif ('.' not in key_value[1]):
+                key_value[1] = int(key_value[1])
 
             setattr(new_instance, key, value)
 
         # creates the new instance
-        storage.save()
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """

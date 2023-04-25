@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 
 
-from os import getenv
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, scoped_session
+import models
 from models.base_model import BaseModel, Base
 from models.amenity import Amenity
 from models.city import City
@@ -9,9 +11,7 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
-from sqlalchemy import (create_engine)
-from sqlalchemy.orm import relationship
-from sqlalchemy.orm import sessionmaker, scoped_session
+import os
 
 
 class DBStorage:
@@ -23,18 +23,24 @@ class DBStorage:
 
     __engine = None
     __session = None
+    hbnb_user = os.getenv('HBNB_MYSQL_USER')
+    hbnb_pwd = os.getenv('HBNB_MYSQL_PWD')
+    hbnb_host = os.getenv('HBNB_MYSQL_HOST')
+    hbnb_db = os.getenv('HBNB_MYSQL_DB')
+    hbnb_env = os.getenv('HBNB_ENV')
 
     def __init__(self):
         """ creates the engine, fetches variables from env"""
         # db_flavor(mysql, postgress)+db_connector://user:password@host/db_name
         self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".format(
-                                      getenv("HBNB_MYSQL_USER"),
-                                      getenv("HBNB_MYSQL_PWD"),
-                                      getenv("HBNB_MYSQL_HOST"),
-                                      getenv("HBNB_MYSQL_DB")),
-                                      pool_pre_ping=True)
-        if getenv("HBNB_ENV") == "test":
-            Base.metadata.drop_all(self.__engine)
+            self.hbnb_user, self.hbnb_pwd, self.hbnb_host,
+            self.hbnb_db), pool_pre_ping=True)
+
+        try:
+            if self.hbnb_env == "test":
+                Base.metadata.drop_all(self.__engine)
+        except KeyError:
+            pass
 
     def all(self, cls=None):
         """query on the current database session (self.__session) all objects

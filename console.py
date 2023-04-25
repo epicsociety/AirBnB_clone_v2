@@ -126,30 +126,26 @@ class HBNBCommand(cmd.Cmd):
 
         # create a dict with the params gotten from the commandline
         new_instance = HBNBCommand.classes[class_name]()
-        for param in args[1:]:
-            key_value = param.split('=')
-            if len(key_value) != 2:
-                continue
-
-            key = key_value[0]
-            value = key_value[1]
+        params = args[1:]
+        for param in params:
+            key, value = param.split('=')
 
             # extract the values by dropping the double quotes
-            if value[0] == '"' and value[-1] == '"' and \
-                    value.count('\\"') % 2 == 0:
+            if value[0] == '\"' and value[-1] == '\"':
                 value = value[1:-1].replace('_', ' ').replace('"', '\\')
-            # check whether the user provided a float else the value is an int
-            elif '.' in value:
-                try:
-                    value = float(value)
-                except ValueError:
-                    continue
+            # check whether the user provided a float else the value is an int 
             else:
                 try:
+                    int(value)
                     value = int(value)
                 except ValueError:
-                    continue
+                    pass
 
+                try:
+                    float(value)
+                    value = float(value)
+                except ValueError:
+                    pass
             setattr(new_instance, key, value)
 
         # creates the new instance

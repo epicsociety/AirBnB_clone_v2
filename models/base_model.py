@@ -4,16 +4,20 @@ import uuid
 from datetime import datetime
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
+import os
 
 
-Base = declarative_base()
-
+hbnb_storage_type = os.getenv('HBNB_TYPE_STORAGE')
+if hbnb_storage_type is not None and hbnb_storage_type == 'db':
+    Base = declarative_base()
+else:
+    Base = object
 
 class BaseModel:
     """A base class for all hbnb models"""
 
     """set attritubes: id, created_at, updated_at"""
-    id = Column(String(60), nullable=False, primary_key=True)
+    id = Column(String(60), unique=True, nullable=False, primary_key=True)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
@@ -22,8 +26,8 @@ class BaseModel:
         if not kwargs:
             from models import storage
             self.id = str(uuid.uuid4())
-            self.created_at = datetime.utcnow()
-            self.updated_at = datetime.utcnow()
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
         else:
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
@@ -47,14 +51,15 @@ class BaseModel:
         """Convert instance into dict format"""
         dictionary = {}
         dictionary.update(self.__dict__)
+
+        # removes the instance
+        if (dictionary.get("_sa_instance_state")):
+            dictionary.pop("_sa_instance_state")
+
         dictionary.update({'__class__':
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
-        try:
-            dictionary.remove("_sa_instance_state")
-        except ValueError:
-            pass
         return dictionary
 
     def delete(self):

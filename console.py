@@ -126,7 +126,7 @@ class HBNBCommand(cmd.Cmd):
 
         # create a dict with the params gotten from the commandline
         new_instance = HBNBCommand.classes[class_name]()
-<<<<<<< HEAD
+
         params = args[1:]
         for param in params:
             key, value = param.split('=')
@@ -134,7 +134,7 @@ class HBNBCommand(cmd.Cmd):
             # extract the values by dropping the double quotes
             if value[0] == '\"' and value[-1] == '\"':
                 value = value[1:-1].replace('_', ' ').replace('"', '\\')
-            # check whether the user provided a float else the value is an int 
+            # check whether the user provided a float else the value is an int
             else:
                 try:
                     int(value)
@@ -148,22 +148,6 @@ class HBNBCommand(cmd.Cmd):
                 except ValueError:
                     pass
             setattr(new_instance, key, value)
-=======
-        for param in args[1:]:
-            key_value = param.split('=')
-            if len(key_value) != 2:
-                break
-            elif ('"' in key_value[1]):
-                key_value[1] = key_value[1][1:-1]
-                key_value[1] = key_value[1].replace("_", " ")
-            elif('.' in key_value[1]):
-                key_value[1] = float(key_value[1])
-            elif ('.' not in key_value[1]):
-                key_value[1] = int(key_value[1])
-
-            setattr(new_instance, key_value[0], key_value[1])
->>>>>>> 90d836e805d9107faa8c91cc8ca4b25896798cc6
-
         # creates the new instance
         new_instance.save()
         print(new_instance.id)

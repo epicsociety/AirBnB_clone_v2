@@ -30,11 +30,10 @@ class DBStorage:
     hbnb_env = os.getenv('HBNB_ENV')
 
     def __init__(self):
-        """ creates the engine, fetches variables from env"""
-        # db_flavor(mysql, postgress)+db_connector://user:password@host/db_name
-        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".format(
-            self.hbnb_user, self.hbnb_pwd, self.hbnb_host,
-            self.hbnb_db), pool_pre_ping=True)
+        """ creates the engine, fetches variables from env 
+        db_flavor(mysql, postgress)+db_connector://user:password@host/db_nameselfself__engineself__engineself__engineself__engine
+        """
+        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".format(self.hbnb_user, self.hbnb_pwd, self.hbnb_host, self.hbnb_db), pool_pre_ping=True)
 
         try:
             if self.hbnb_env == "test":
@@ -80,7 +79,7 @@ class DBStorage:
     def reload(self):
         """ create all tables in the database """
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self__engine,
+        session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session  = Session()

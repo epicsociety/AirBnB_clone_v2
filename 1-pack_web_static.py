@@ -3,12 +3,15 @@
     A script that will create compress file from files in web_static folder
 """
 
+
 from fabric.api import local
 from os import path
 import tarfile
 from datetime import datetime
 
+
 def do_pack():
+
     """
         Generates a compress file from web_static folder
     """
@@ -19,6 +22,6 @@ def do_pack():
         name = "web_static_" + now
         local("tar -cvzf versions/{}.tgz web_static/".format(name))
         size_of_file = path.getsize("./versions/{}.tgz".format(name))
-        print("web_static packed: versions/" + name + ".tgz -> " + size_of_file + " Bytes")
+        print("web_static packed: versions/{}.tgz -> {} Bytes".format(name, size_of_file))
     except BaseException:
         return None

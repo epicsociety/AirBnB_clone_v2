@@ -11,7 +11,7 @@ echo "<html>
     <head>
     </head>
     <body>
-        Holberton School
+      Holberton School
     </body>
 </html>" | sudo tee /data/web_static/releases/test/index.html
 rm -rf /data/web_static/current

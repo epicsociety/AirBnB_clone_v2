@@ -7,7 +7,7 @@ exec { 'install-nginx':
   unless      => 'dpkg -l nginx',
   user        => 'root',
   logoutput   => true,
-  notify      => Service['nginx'],
+  #notify      => Service['nginx'],
 }
 
 file { '/data/':
@@ -50,7 +50,13 @@ file { '/data/web_static/releases/test/index.html':
   owner   => 'ubuntu',
   group   => 'ubuntu',
   mode    => '0644',
-  content => "Holberton School Puppet\n",
+  content => "<html>
+  <head>
+  </head>
+  <body>
+    Holberton School
+  </body>
+</html>\n",
 }
 
 file { '/data/web_static/current/':
@@ -113,3 +119,5 @@ file { '/etc/nginx/sites-available/default':
       root /var/www/html;
       internal;
     }
+}"
+}

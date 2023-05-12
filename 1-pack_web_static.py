@@ -4,6 +4,7 @@
 from fabric.api import local
 from datetime import datetime
 
+
 def do_pack():
     """ Generate a .tgz archive from the contents of the given webstatic folder
 
@@ -16,7 +17,7 @@ def do_pack():
         timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
         archive_path = "versions/web_static_{}.tgz".format(timestamp)
 
-        command  = "tar -czvf {} web_static".format(archive_path)
+        command = "tar -czvf {} web_static".format(archive_path)
         local(command)
 
         return archive_path

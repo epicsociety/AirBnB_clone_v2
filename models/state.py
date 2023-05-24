@@ -3,7 +3,9 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-
+import models
+from models.city import City
+import os
 
 class State(BaseModel, Base):
     """ Contains the states table in the MySQL database
@@ -14,4 +16,15 @@ class State(BaseModel, Base):
     """
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
-    cities = relationship("City", backref="state", cascade="all, delete")
+    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+        cities = relationship("City", backref="state", cascade="delete")
+    else:
+        @property
+        def cities(self):
+            """Getter attribute cities"""
+            city_instances = []
+            all_cities = models.storage.all(City)
+            for city in all_cities.values():
+                if city.state_id == self.id:
+                    city_instances.append(city)
+            return city_instances

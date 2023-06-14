@@ -5,21 +5,25 @@ from datetime import datetime
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 import os
+import models
 
 
 hbnb_storage_type = os.getenv('HBNB_TYPE_STORAGE')
 if hbnb_storage_type is not None and hbnb_storage_type == 'db':
     Base = declarative_base()
 else:
-    Base = object
+    class Base:
+        pass
 
 class BaseModel:
     """A base class for all hbnb models"""
 
     """set attritubes: id, created_at, updated_at"""
-    id = Column(String(60), unique=True, nullable=False, primary_key=True)
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    
+    if hbnb_storage_type == 'db':
+        id = Column(String(60), unique=True, nullable=False, primary_key=True)
+        created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+        updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""

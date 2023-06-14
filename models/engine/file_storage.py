@@ -57,9 +57,17 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """Deletes objects"""
+        """
+            Deletes an object from the current database session
+
+            Args:
+                obj: the object to delete. If None, the method does nothing.
+
+            Returns:
+                None
+         """
         if obj is None:
-            pass
+            return
         else:
             # get the key of the objects
             key = obj.to_dict()['__class__'] + '.' + obj.id

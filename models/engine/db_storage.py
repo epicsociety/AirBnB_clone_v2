@@ -25,7 +25,7 @@ class DBStorage:
     __session = None
     hbnb_user = os.getenv('HBNB_MYSQL_USER')
     hbnb_pwd = os.getenv('HBNB_MYSQL_PWD')
-    hbnb_host = os.getenv('HBNB_MYSQL_HOST')
+    hbnb_host = os.getenv('HBNB_MYSQL_HOST', default="localhost")
     hbnb_db = os.getenv('HBNB_MYSQL_DB')
     hbnb_env = os.getenv('HBNB_ENV')
 
